@@ -8,7 +8,7 @@ function Router () {
 
 var _METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;
 
-// delegate from a routes object to an object with req/res handlers
+// delegate from a routes object to an object with req/res actions
 // this function uses .map below for most of the work
 Router.prototype.delegate = function delegate (routes, actions) {
   for (route_name in routes) {
