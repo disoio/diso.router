@@ -69,7 +69,7 @@ app.use(router);
 
 LICENSE
 -------
-[MIT](https://github.com/stephenhandley/diso.router/blob/master/LICENSE)
+[MIT](https://raw.github.com/stephenhandley/diso.router/master/LICENSE)
 
 TODO
 ----
