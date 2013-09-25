@@ -7,7 +7,7 @@ Delegation based routing
 
 Latest Version
 --------------
-1.0.0
+1.1.0
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "1.0.0"
+    "diso.router": "1.1.0"
   }
 }
 ```
@@ -32,7 +32,7 @@ Usage
 var HTTP = require('http');
 var Router = require('diso.router');
 
-var router = new Router();
+
 
 var routes = {
   showShow: 'GET /show/:title',
@@ -44,7 +44,10 @@ var actions = {
   createShow : function (req, res) { res.end("SHOW" + req.route.params.title ); }
 };
 
+var router = new Router();
 router.delegate(routes, actions);
+// or just 
+// var router = new Router(routes, actions);
 
 // add more batches with .delegate
 // router.delegate(more_routes, some_other_actions_in_different_object);

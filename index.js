@@ -1,9 +1,13 @@
 var Type = require('type-of-is');
 var RoutePattern = require('route-pattern');
 
-function Router () {
+function Router (routes, actions) {
   this._matchers = [];
   this._not_found = null;
+  
+  if (arguments.length == 2) {
+    this.delegate(routes, actions);
+  }
 }
 
 var _METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;

@@ -17,8 +17,7 @@ var actions = {
   createShow: end,
 };
 
-var router = new Router();
-router.delegate(routes, actions);
+var router = new Router(routes, actions);
 
 module.exports = {
   'diso.router using basic HTTP should': {
