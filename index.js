@@ -18,7 +18,7 @@ Router.prototype.delegate = function delegate (routes, actions) {
   for (route_name in routes) {
     var action = actions[route_name];
     if (!action) {
-      throw (route_name + " not defined in actions passed to dispath or map");
+      throw (route_name + " not defined in actions passed to dispatch or map");
     }
     
     var route = routes[route_name];
