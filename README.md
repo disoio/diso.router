@@ -67,6 +67,10 @@ var app = Connect();
 app.use(router);
 ```
 
+LICENSE
+-------
+[MIT](https://github.com/stephenhandley/diso.router/blob/master/LICENSE)
+
 TODO
 ----
 - support route generation via name and params
