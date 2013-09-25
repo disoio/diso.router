@@ -32,8 +32,6 @@ Usage
 var HTTP = require('http');
 var Router = require('diso.router');
 
-
-
 var routes = {
   showShow: 'GET /show/:title',
   createShow: 'POST /show'
