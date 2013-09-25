@@ -44,7 +44,7 @@ var actions = {
 
 var router = new Router();
 router.delegate(routes, actions);
-// or just 
+// or equivalently 
 // var router = new Router(routes, actions);
 
 // add more batches with .delegate
