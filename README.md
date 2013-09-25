@@ -11,8 +11,7 @@ var router = new Router();
 
 var routes = {
   showShow: 'GET /show/:title',
-  createShow: 'POST /show',
-  home: '/'
+  createShow: 'POST /show'
 }
 
 var actions = {
