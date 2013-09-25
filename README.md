@@ -7,7 +7,7 @@ Delegation based routing
 
 Latest Version
 --------------
-1.1.0
+1.1.1
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "1.1.0"
+    "diso.router": "1.1.1"
   }
 }
 ```

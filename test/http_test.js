@@ -69,6 +69,13 @@ module.exports = {
         }});
       },
       
+      'missing action by throwing error': function (done) {
+        Assert.throws(function (err) {
+          router.delegate({ smork: '/smooooork' }, {});
+        }, /not defined in actions/);
+        done();
+      },
+      
       'unmatched route by': {
         'rendering 404 text when notFound is not set': function (done) {
           var req = { method: 'GET', url: '/barf' };
