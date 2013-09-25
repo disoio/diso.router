@@ -6,7 +6,9 @@ function Router () {
   this.not_found = null;
 }
 
-Router.prototype.route = function route (req, res) {
+// if match return handler and set req.params to RoutePattern namedParams
+// if no match return null 
+Router.prototype.match = function match (req) {
   for (var i = 0; i < this.matchers.length; i++) {
     var matcher = this.matchers[i];
     var pattern = matcher.pattern;
@@ -16,20 +18,39 @@ Router.prototype.route = function route (req, res) {
     }
     
     if (pattern.matches(req.url)) {
-      req.route = {
-        params: pattern.match(req.url).namedParams,
-        action: matcher.action
-      };
-      return matcher.handler(req, res);
+      var params = pattern.match(req.url).namedParams;
+      params.action = matcher.action;
+      req.params = params;
+      return matcher.handler;
     }
   }
+  return null;
+};
+
+Router.prototype.dispatch = function dispatch (req, res, next) {
+  var handler = this.match(req);
+  
+  if (handler) {
+    return handler(req, res, next);  
+  } 
   
   if (this.not_found) {
-    this.not_found(req, res);
+    return this.not_found(req, res, next);
+  } 
+  
+  var error_message = '404 Not Found.';
+  if (!!next) {
+    var err = new Error(error_message);
+    err.status = 404;
+    next(err);
   } else {
-    res.end('404');
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end(error_message);
   }
-};
+}
+
+// hook for middleware
+Router.prototype.handle = Router.prototype.dispatch;
 
 var METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;
 
