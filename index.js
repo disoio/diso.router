@@ -68,7 +68,6 @@ Router.prototype.delegate = function delegate (routes, handlers) {
     if (!handler) {
       throw (action + " not defined in handlers");
     }
-    handler.bind(handlers);
     
     var route = routes[action];
     
