@@ -27,6 +27,9 @@ router.delegate(routes, actions);
 // or add a single route with .map(<name>, <route>, <handler>)
 router.map('home', '/', function (req, res) { res.end('HOME!'); });
 
+// 404
+router.notFound(function (req, res) { res.end("wildcard or 404 or blah"); });
+
 var server = HTTP.createServer(function (req, res) {
   router.route(req, res);
 }).listen(8000, '127.0.0.1');
