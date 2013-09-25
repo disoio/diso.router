@@ -1,0 +1,47 @@
+{
+  "name": "diso.router",
+  "version": "0.0.1",
+  "description": "Delegation based routing",
+  "license": "MIT",
+  "main": "index.js",
+  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stephenhandley/diso.router.git"
+  },
+  
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  
+  "keywords": [
+    "route",
+    "router",
+    "routes",
+    "routing"
+  ],
+  
+  "directories" : {
+    "lib" : ".",
+    "test" : "test"
+  },
+  
+  "engines" : {
+    "node" : ">=0.10.5"
+  },
+
+  "dependencies": {
+    "type-of-is": "3.1.x",
+    "route-pattern": "0.0.6"
+  },
+  
+  "devDependencies": {
+    "asserts": "4.0.x"
+  },
+  
+  "author": {
+    "name": "Stephen Handley",
+    "email": "stephen.handley@gmail.com",
+    "url": "http://person.sh"
+  }
+}
