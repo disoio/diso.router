@@ -4,7 +4,9 @@ diso.router
 Delegation based routing
 
 ```
+var HTTP = require('http');
 var Router = require('diso.router');
+
 var router = new Router();
 
 var routes = {
@@ -21,11 +23,14 @@ var actions = {
 router.delegate(routes, actions);
 
 // add more batches with .delegate
-router.delegate(more_routes, some_actions_in_different_object);
+// router.delegate(more_routes, some_other_actions_in_different_object);
 
 // or add a single route with .map(<name>, <route>, <handler>)
 router.map('home', '/', function (req, res) { res.end('HOME!'); });
 
+var server = HTTP.createServer(function (req, res) {
+  router.route(req, res);
+}).listen(8000, '127.0.0.1');
 ```
 
 TODO
