@@ -16,7 +16,7 @@ var routes = {
 
 var actions = {
   showShow   : function (req, res) { res.end("SHOW " + req.route.params.title ); },
-  createShow : function (req, res) { res.end("SHOW" + req.route.params.title ); },
+  createShow : function (req, res) { res.end("SHOW" + req.route.params.title ); }
 };
 
 router.delegate(routes, actions);
