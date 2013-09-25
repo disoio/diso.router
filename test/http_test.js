@@ -10,7 +10,7 @@ var routes = {
 };
 
 var end = function (req, res) { res.end() };
-var handler = {
+var actions = {
   home: end,
   show: end,
   event: end,
@@ -18,7 +18,7 @@ var handler = {
 };
 
 var router = new Router();
-router.delegate(routes, handler);
+router.delegate(routes, actions);
 
 module.exports = {
   'diso.router using basic HTTP should': {
@@ -26,7 +26,7 @@ module.exports = {
       'empty route matcher': function (done) {
         var req = { method: 'GET', url: '/' };
         router.dispatch(req, { end : function () {
-          Assert.equal(req.params.action, 'home');
+          Assert.equal(req.params.route_name, 'home');
           Assert.equal(Object.keys(req.params).length, 1);
           done();
         }});
@@ -35,7 +35,7 @@ module.exports = {
       'named param route': function (done) {
         var req = { method: 'GET', url: '/show/barf' };
         router.dispatch(req, { end : function () {
-          Assert.equal(req.params.action, 'show');
+          Assert.equal(req.params.route_name, 'show');
           Assert.equal(req.params.title, 'barf');
           done();
         }});
@@ -45,7 +45,7 @@ module.exports = {
         var date = '122312';
         var req = { method: 'GET', url: '/event/' + date }
         router.dispatch(req, { end : function () {
-          Assert.equal(req.params.action, 'event');
+          Assert.equal(req.params.route_name, 'event');
           Assert.equal(req.params.date, date);
           done();
         }});
@@ -54,18 +54,18 @@ module.exports = {
       'route using POST': function (done) {
         var req = { method: 'POST', url: '/show' };
         router.dispatch(req, { end : function () {
-          Assert.equal(req.params.action, 'createShow');
+          Assert.equal(req.params.route_name, 'createShow');
           done();
         }});
       },
       
       'single mapped route': function (done) {
-        var doh_action = 'doh';
+        var doh_route_name = 'doh';
         var doh_url = '/dohdohdoh';
-        router.map(doh_action, doh_url, end);
+        router.map(doh_route_name, doh_url, end);
         var req = { method: 'GET', 'url': doh_url };
         router.dispatch(req, { end : function () {
-          Assert.equal(req.params.action, doh_action);
+          Assert.equal(req.params.route_name, doh_route_name);
           done();
         }});
       },

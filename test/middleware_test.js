@@ -11,19 +11,19 @@ var routes = {
 };
 
 var end = function (req, res, next) { next(); };
-var handler = {
+var actions = {
   show: end,
   home: end
 };
 
 var router = new Router();
-router.delegate(routes, handler);
+router.delegate(routes, actions);
 
 var app = Connect();
 app
   .use(router)
   .use(function (req, res, next) {
-    res.end((req.params.title || '') + req.params.action);
+    res.end((req.params.title || '') + req.params.route_name);
   });
 
 var super_test = SuperTest(app);

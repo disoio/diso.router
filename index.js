@@ -2,65 +2,35 @@ var Type = require('type-of-is');
 var RoutePattern = require('route-pattern');
 
 function Router () {
-  this.matchers = [];
-  this.not_found = null;
+  this._matchers = [];
+  this._not_found = null;
 }
 
-// if match return handler and set req.params to RoutePattern namedParams
-// if no match return null 
-Router.prototype.match = function match (req) {
-  for (var i = 0; i < this.matchers.length; i++) {
-    var matcher = this.matchers[i];
-    var pattern = matcher.pattern;
-    
-    if (matcher.method && (matcher.method !== req.method)) {
-      continue;
+var _METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;
+
+// delegate from a routes object to an object with req/res handlers
+// this function uses .map below for most of the work
+Router.prototype.delegate = function delegate (routes, actions) {
+  for (route_name in routes) {
+    var action = actions[route_name];
+    if (!action) {
+      throw (route_name + " not defined in actions passed to dispath or map");
     }
     
-    if (pattern.matches(req.url)) {
-      var params = pattern.match(req.url).namedParams;
-      params.action = matcher.action;
-      req.params = params;
-      return matcher.handler;
-    }
+    var route = routes[route_name];
+    
+    this.map(route_name, route, action);
   }
-  return null;
 };
 
-Router.prototype.dispatch = function dispatch (req, res, next) {
-  var handler = this.match(req);
-  
-  if (handler) {
-    return handler(req, res, next);  
-  } 
-  
-  if (this.not_found) {
-    return this.not_found(req, res, next);
-  } 
-  
-  var error_message = '404 Not Found.';
-  if (!!next) {
-    var err = new Error(error_message);
-    err.status = 404;
-    next(err);
-  } else {
-    res.writeHead(404, {'Content-Type': 'text/plain'});
-    res.end(error_message);
-  }
-}
-
-// hook for middleware
-Router.prototype.handle = Router.prototype.dispatch;
-
-var METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;
-
-Router.prototype.map = function map (action, route, handler) {
+// map a single route to a single action
+Router.prototype.map = function map (route_name, route, action) {
   var pattern;
   if (Type(route, String)) {
     pattern = route;
     method = null;
     
-    var method_prefix = pattern.match(METHOD_PREFIX_REGEXP);
+    var method_prefix = pattern.match(_METHOD_PREFIX_REGEXP);
     if (method_prefix) {
       pattern = pattern.slice(method_prefix[0].length);
       method = method_prefix[1];
@@ -75,29 +45,66 @@ Router.prototype.map = function map (action, route, handler) {
   
   var matcher = {
     pattern: pattern,
-    handler: handler,
+    action: action,
     method: method,
-    action: action
+    route_name: route_name
   };
 
-  this.matchers.push(matcher);
+  this._matchers.push(matcher);
 }
 
-Router.prototype.delegate = function delegate (routes, handlers) {
-  for (action in routes) {
-    var handler = handlers[action];
-    if (!handler) {
-      throw (action + " not defined in handlers");
-    }
-    
-    var route = routes[action];
-    
-    this.map(action, route, handler);
-  }
+// register a req/res action to be called when no route is matched
+// by an incoming request
+Router.prototype.notFound = function notFound (not_found) {
+  this._not_found = not_found;
 };
 
-Router.prototype.notFound = function noMatch (not_found) {
-  this.not_found = not_found;
+// dispatch an incoming request through the router, so the appropriate
+// req/res action handles it
+Router.prototype.dispatch = function dispatch (req, res, next) {
+  var action = this._match(req);
+  
+  if (action) {
+    return action(req, res, next);  
+  } 
+  
+  if (this._not_found) {
+    return this._not_found(req, res, next);
+  } 
+  
+  var error_message = '404 Not Found.';
+  if (!!next) {
+    var err = new Error(error_message);
+    err.status = 404;
+    next(err);
+  } else {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end(error_message);
+  }
+}
+
+// Alias dispatch as "handle", which is what Connect middleware looks for
+Router.prototype.handle = Router.prototype.dispatch;
+
+// if match return action and set req.params to RoutePattern namedParams
+// if no match return null 
+Router.prototype._match = function _match (req) {
+  for (var i = 0; i < this._matchers.length; i++) {
+    var matcher = this._matchers[i];
+    var pattern = matcher.pattern;
+    
+    if (matcher.method && (matcher.method !== req.method)) {
+      continue;
+    }
+    
+    if (pattern.matches(req.url)) {
+      var params = pattern.match(req.url).namedParams;
+      params.route_name = matcher.route_name;
+      req.params = params;
+      return matcher.action;
+    }
+  }
+  return null;
 };
 
 module.exports = Router;

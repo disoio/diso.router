@@ -49,7 +49,7 @@ router.delegate(routes, actions);
 // add more batches with .delegate
 // router.delegate(more_routes, some_other_actions_in_different_object);
 
-// or add a single route with .map(<name>, <route>, <handler>)
+// or add a single route with .map(<name>, <route>, <action>)
 router.map('home', '/', function (req, res) { res.end('HOME!'); });
 
 // 404
