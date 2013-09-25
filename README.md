@@ -1,15 +1,16 @@
 diso.router
 ===========
 
-# Description
-
+Description
+-----------
 Delegation based routing
 
-# Latest Version
-
+Latest Version
+--------------
 1.0.0
 
-# Installation
+Installation
+------------
 ```
 npm install diso.router
 ```
@@ -25,8 +26,8 @@ or in package.json
 }
 ```
 
-# Usage
-
+Usage
+-----
 ```
 var HTTP = require('http');
 var Router = require('diso.router');
@@ -64,6 +65,7 @@ var app = Connect();
 app.use(router);
 ```
 
-#TODO
+TODO
+----
 - support route generation via name and params
 - include post data in route params? 
