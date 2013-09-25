@@ -67,7 +67,7 @@ var app = Connect();
 app.use(router);
 ```
 
-LICENSE
+License
 -------
 [MIT](https://raw.github.com/stephenhandley/diso.router/master/LICENSE)
 
