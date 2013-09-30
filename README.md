@@ -58,7 +58,7 @@ var server = HTTP.createServer(function (req, res) {
 }).listen(8000, '127.0.0.1');
 
 // or as Connect middleware
-// (assuming you've changed the signatures of action and notFound functions above to (req, res, next))
+// (assuming you've changed the signatures notFound to (req, res, next))
 var app = Connect();
 app.use(router);
 ```
