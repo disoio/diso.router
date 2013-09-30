@@ -17,7 +17,7 @@ var actions = {
 };
 
 var router = new Router();
-router.delegate(routes, actions);
+router.route(routes);
 
 var app = Connect();
 app

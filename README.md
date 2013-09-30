@@ -3,11 +3,11 @@ diso.router
 
 Description
 -----------
-Delegation based routing
+Simple router that augments request object with params, using [RoutePattern](https://github.com/bjoerge/route-pattern/) for named param matching. 
 
 Latest Version
 --------------
-1.1.1
+2.0.0
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "1.1.1"
+    "diso.router": "2.0.0"
   }
 }
 ```
@@ -37,28 +37,24 @@ var routes = {
   createShow: 'POST /show'
 }
 
-var actions = {
-  showShow   : function (req, res) { res.end("SHOW " + req.route.params.title ); },
-  createShow : function (req, res) { res.end("SHOW" + req.route.params.title ); }
-};
-
 var router = new Router();
-router.delegate(routes, actions);
+router.route(routes);
 // or equivalently 
-// var router = new Router(routes, actions);
+// var router = new Router(routes);
 
-// add more batches with .delegate
-// router.delegate(more_routes, some_other_actions_in_different_object);
+// add more batches with .route
+// router.route(more_routes);
 
-// or add a single route with .map(<name>, <route>, <action>)
-router.map('home', '/', function (req, res) { res.end('HOME!'); });
+// or add a single route with .route(<name>, <route>)
+router.route('home', '/');
 
 // 404
 router.notFound(function (req, res) { res.end("wildcard or 404 or blah"); });
 
 // Use via basic HTTP
 var server = HTTP.createServer(function (req, res) {
-  router.dispatch(req, res);
+  router.handle(req, res);
+  req.end('Title is ' + req.params.title);
 }).listen(8000, '127.0.0.1');
 
 // or as Connect middleware
