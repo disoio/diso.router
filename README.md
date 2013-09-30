@@ -54,7 +54,7 @@ router.notFound(function (req, res) { res.end("wildcard or 404 or blah"); });
 // Use via basic HTTP
 var server = HTTP.createServer(function (req, res) {
   router.handle(req, res);
-  req.end('Title is ' + req.params.title);
+  req.end("Route name is " + req.params.route_name + " and title is " + (req.params.title || ''));
 }).listen(8000, '127.0.0.1');
 
 // or as Connect middleware
