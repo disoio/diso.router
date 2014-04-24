@@ -6,6 +6,7 @@ var routes = {
   show: 'GET /show/:title',
   createShow: 'POST /show',
   event: { pattern: '/event/:date', method: 'GET' },
+  overlyComplicated : '/hello/:planet?foo=:foo&fruit=:fruit#:section',
   home: '/'
 };
 
@@ -61,6 +62,16 @@ module.exports = {
         var req = { method: 'GET', 'url': doh_url };
         router.handle(req, {});
         Assert.equal(req.params.route_name, doh_route_name);
+        done();
+      },
+      
+      'overly complicated route': function (done) {
+        var oc_route_name = 'overlyComplicated';
+        var oc_url = '/hello/earth?foo=bar&fruit=apple#chapter2';
+        router.route(oc_route_name, oc_url);
+        var req = { method: 'GET', 'url': oc_url };
+        router.handle(req, {});
+        Assert.equal(req.params.route_name, oc_route_name);
         done();
       },
       

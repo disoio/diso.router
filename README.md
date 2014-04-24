@@ -7,7 +7,7 @@ Simple router that augments request object with params, using [RoutePattern](htt
 
 Latest Version
 --------------
-2.0.0
+2.1.0
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "2.0.0"
+    "diso.router": "2.1.0"
   }
 }
 ```
@@ -61,6 +61,9 @@ var server = HTTP.createServer(function (req, res) {
 // (assuming you've changed the signatures notFound to (req, res, next))
 var app = Connect();
 app.use(router);
+
+// or client side
+router.match({url: '/barf/4ever'})
 ```
 
 License
@@ -69,5 +72,5 @@ License
 
 TODO
 ----
-- support route generation via name and params
 - include post data in route params? 
+- rewrite without RoutePattern and ditch query param / hash naming, allow for optional params? 

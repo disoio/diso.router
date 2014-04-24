@@ -1,5 +1,6 @@
 var Type = require('type-of-is');
 var RoutePattern = require('route-pattern');
+var Url = require('url')
 
 function Router (routes) {
   this._matchers = [];
@@ -64,6 +65,85 @@ Router.prototype.notFound = function notFound (not_found) {
   this._not_found = not_found;
 };
 
+Router.prototype.format = function format (options) {
+  var route_name = options.route;
+  var params = options.params;
+  
+  // find matching route
+  var pattern = null;
+  for (var i = 0, len = this._matchers.length; i < len; i++) {
+    var matcher = this._matchers[i];
+    if (matcher.route_name === route_name) {
+      pattern = matcher.pattern;
+      break;
+    }
+  }
+  
+  if (!pattern) {
+    var err = "No route named " + route_name;
+    throw err;
+  }
+  
+  var path_param_names = pattern.pathPattern.params;
+  
+  var hash_param_names = []
+  if (pattern.hashPattern) {
+    hash_param_names = pattern.hashPattern.params;
+  }
+  
+  var qs_param_names = []
+  if (pattern.queryStringPattern) {
+    for (var i = 0, len = pattern.queryStringPattern.params.length; i < len; i++) {
+      var param = pattern.queryStringPattern.params[i];
+      qs_param_names.push(param.name);
+    }
+  }
+    
+  var all_param_names = path_param_names.concat(hash_param_names, qs_param_names);
+  
+  for (var i = 0, len = all_param_names.length; i < len; i++) {
+    var param_name = all_param_names[i];
+    if (!(param_name in params)) {
+      var err = route_name + ' is missing expected param ' + param_name;
+      throw err;
+    }
+  }
+    
+  function _substitute (str, k) {
+    var placeholder = ':' + k;
+    var value = params[k];
+    str = str.replace(placeholder, value);
+    delete params[k];
+    return str;
+  }
+  
+  var path = pattern.pathPattern.routeString;
+  if (path_param_names.length) {
+    path_param_names.forEach(function (k) {
+      path = _substitute(path, k);
+    });
+  }
+  
+  var hash = null;
+  if (hash_param_names.length) {
+    hash = pattern.hashPattern.routeString;
+    hash_param_names.forEach(function (k) {
+      hash = _substitute(hash, k);
+    });
+  }
+  
+  var url_params = {
+    pathname : path,
+    query : params
+  }
+  
+  if (hash) {
+    url_params.hash = hash;
+  }
+
+  return Url.format(url_params);
+}
+
 // Handle an incoming request and augment request object with params attribute
 // if a match is made, then call next.
 // If no match, invoke a notFound handler if one has been added. 
@@ -71,7 +151,7 @@ Router.prototype.notFound = function notFound (not_found) {
 //
 // Note: Connect expects this method to be named 'handle'
 Router.prototype.handle = function (req, res, next) {
-  var params = this._match(req);
+  var params = this.match(req);
 
   if (params) {
     req.params = params;
@@ -96,22 +176,24 @@ Router.prototype.handle = function (req, res, next) {
       return res.end(error_message);
     }
   }
-  
 }
 
 // Checks whether there is a route matching this request. If there is a match,
 // returns the matched route params, otherwise returns null.
-Router.prototype._match = function _match (req) {
+Router.prototype.match = function match (options) {
+  var url = options.url;
+  
   for (var i = 0; i < this._matchers.length; i++) {
     var matcher = this._matchers[i];
     var pattern = matcher.pattern;
     
-    if (matcher.method && (matcher.method !== req.method)) {
+    if (matcher.method && options.method && (matcher.method !== options.method)) {
       continue;
     }
     
-    if (pattern.matches(req.url)) {
-      var params = pattern.match(req.url).namedParams;
+    if (pattern.matches(url)) {
+      var match = pattern.match(url);
+      var params = match.namedParams;
       params.route_name = matcher.route_name;
       return params;
     }
