@@ -7,7 +7,7 @@ Simple router that augments request object with params, using [RoutePattern](htt
 
 Latest Version
 --------------
-2.1.0
+3.0.0
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "2.1.0"
+    "diso.router": "3.0.0"
   }
 }
 ```
@@ -64,6 +64,14 @@ app.use(router);
 
 // or client side
 router.match({url: '/barf/4ever'})
+
+// route formatting
+router.format({
+  name : 'show',
+  params : {
+    title: 'barf'
+  }
+}) //RETURNS /show/barf
 ```
 
 License

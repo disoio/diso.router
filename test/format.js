@@ -18,7 +18,7 @@ module.exports = {
       
       'empty route': function () {
         var url = router.format({
-          route  : 'emptyRoute',
+          name   : 'emptyRoute',
           params : {}
         });
         
@@ -27,7 +27,7 @@ module.exports = {
       
       'no param route': function () {
         var url = router.format({
-          route  : 'noParams',
+          name   : 'noParams',
           params : {}
         });
         
@@ -36,7 +36,7 @@ module.exports = {
       
       'one param route': function () {
         var url = router.format({
-          route  : 'oneParam',
+          name   : 'oneParam',
           params : {
             title : 'barf'
           }
@@ -47,12 +47,12 @@ module.exports = {
       
       'overly complicated route' : function () {
         var url = router.format({
-          route: 'overlyComplicated',
+          name   : 'overlyComplicated',
           params : {
-            planet : 'earth',
-            fruit : 'bythefoot',
+            planet  : 'earth',
+            fruit   : 'bythefoot',
             section : 'barf',
-            foo : 'd'
+            foo     : 'd'
           }
         });
         
@@ -66,12 +66,12 @@ module.exports = {
       },
       'extra params by adding them to the query' : function () {
         var url = router.format({
-          route: 'overlyComplicated',
+          name   : 'overlyComplicated',
           params : {
-            planet : 'earth',
-            foo : 'd',
-            barf : 'b',
-            fruit : 'bythefoot',
+            planet  : 'earth',
+            foo     : 'd',
+            barf    : 'b',
+            fruit   : 'bythefoot',
             section : 'barf'
           }
         });
@@ -81,7 +81,7 @@ module.exports = {
         Assert.equal('#barf', parsed_url.hash);
         Assert.deepEqual(parsed_url.query, {
           foo   : 'd',
-          fruit :'bythefoot',
+          fruit : 'bythefoot',
           barf  : 'b'
         });
       }
@@ -90,7 +90,7 @@ module.exports = {
       'missing route' : function () {
         Assert.throws(function () {
           var url = router.format({
-            route : 'barf',
+            name   : 'barf',
             params : {}
           });
         }, /No route named barf/);
@@ -98,7 +98,7 @@ module.exports = {
       'missing param' : function () {
         Assert.throws(function () {
           var url = router.format({
-            route: 'oneParam',
+            name   : 'oneParam',
             params : {
               barf : 'barf'
             }

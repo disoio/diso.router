@@ -66,8 +66,8 @@ Router.prototype.notFound = function notFound (not_found) {
 };
 
 Router.prototype.format = function format (options) {
-  var route_name = options.route;
-  var params = options.params;
+  var route_name = options.name;
+  var params     = options.params;
   
   // find matching route
   var pattern = null;
