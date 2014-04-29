@@ -33,8 +33,8 @@ var HTTP = require('http');
 var Router = require('diso.router');
 
 var routes = {
-  showShow: 'GET /show/:title',
-  createShow: 'POST /show'
+  showShow   : 'GET /show/:title',
+  createShow : 'POST /show'
 }
 
 var router = new Router();
@@ -54,7 +54,7 @@ router.notFound(function (req, res) { res.end("wildcard or 404 or blah"); });
 // Use via basic HTTP
 var server = HTTP.createServer(function (req, res) {
   router.handle(req, res);
-  req.end("Route name is " + req.params.route_name + " and title is " + (req.params.title || ''));
+  req.end("Route name is " + req.route.name + " and title is " + (req.route.params.title || ''));
 }).listen(8000, '127.0.0.1');
 
 // or as Connect middleware
@@ -63,13 +63,13 @@ var app = Connect();
 app.use(router);
 
 // or client side
-router.match({url: '/barf/4ever'})
+router.match({url : '/barf/4ever'})
 
 // route formatting
 router.format({
   name : 'show',
   params : {
-    title: 'barf'
+    title : 'barf'
   }
 }) //RETURNS /show/barf
 ```
