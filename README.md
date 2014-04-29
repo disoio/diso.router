@@ -7,7 +7,7 @@ Simple router that augments request object with params, using [RoutePattern](htt
 
 Latest Version
 --------------
-4.0.0
+4.0.1
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "4.0.0"
+    "diso.router": "4.0.1"
   }
 }
 ```
