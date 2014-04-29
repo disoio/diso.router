@@ -3,7 +3,7 @@ var RoutePattern = require('route-pattern');
 var Url = require('url')
 
 function Router (routes) {
-  this._matchers = [];
+  this._matchers  = [];
   this._not_found = null;
   
   if (arguments.length == 1) {
@@ -16,9 +16,10 @@ var _METHOD_PREFIX_REGEXP = /^(GET|HEAD|POST|UPDATE|DELETE) /;
 // Define a set of routes or a single route
 Router.prototype.route = function route (routes) {
   if (arguments.length === 2) {
-    var name = arguments[0];
+    var name    = arguments[0];
     var pattern = arguments[1];
-    routes = {};
+    
+    routes       = {};
     routes[name] = pattern;
     
   } else if (arguments.length !== 1) {
@@ -26,22 +27,26 @@ Router.prototype.route = function route (routes) {
   }
   
   for (route_name in routes) {
+    if (!routes.hasOwnProperty(route_name)) {
+      continue;
+    }
+    
     var route = routes[route_name];
     
     var pattern;
     if (Type(route, String)) {
       pattern = route;
-      method = null;
+      method  = null;
     
       var method_prefix = pattern.match(_METHOD_PREFIX_REGEXP);
       if (method_prefix) {
         pattern = pattern.slice(method_prefix[0].length);
-        method = method_prefix[1];
+        method  = method_prefix[1];
       }
       
     } else if (Type(route, Object) && route.hasOwnProperty('pattern')) {
       pattern = route.pattern;
-      method = (!!route.method) ? route.method : null;
+      method  = (!!route.method) ? route.method : null;
     
     } else {
       throw new TypeError('Route pattern must be String or Object with pattern property');
@@ -50,9 +55,9 @@ Router.prototype.route = function route (routes) {
     pattern = RoutePattern.fromString(pattern);
   
     var matcher = {
-      pattern: pattern,
-      method: method,
-      route_name: route_name
+      pattern    : pattern,
+      method     : method,
+      route_name : route_name
     };
 
     this._matchers.push(matcher);
@@ -65,9 +70,9 @@ Router.prototype.notFound = function notFound (not_found) {
   this._not_found = not_found;
 };
 
-Router.prototype.format = function format (options) {
-  var route_name = options.name;
-  var params     = options.params;
+Router.prototype.format = function format (route) {
+  var route_name = route.name;
+  var params     = route.params;
   
   // find matching route
   var pattern = null;
@@ -134,7 +139,7 @@ Router.prototype.format = function format (options) {
   
   var url_params = {
     pathname : path,
-    query : params
+    query    : params
   }
   
   if (hash) {
@@ -151,14 +156,14 @@ Router.prototype.format = function format (options) {
 //
 // Note: Connect expects this method to be named 'handle'
 Router.prototype.handle = function (req, res, next) {
-  var params = this.match(req);
+  var match = this.match(req);
 
-  if (params) {
-    req.params = params;
+  if (match) {
+    req.route = match;
+    
     if (!!next) {
       next();
     }
-    
   } else {
     if (this._not_found) {
       return this._not_found(req, res, next);
@@ -167,10 +172,9 @@ Router.prototype.handle = function (req, res, next) {
     var error_message = '404 Not Found.';
     
     if (!!next) {
-      var err = new Error(error_message);
-      err.status = 404;
-      return next(err);
-      
+      var error = new Error(error_message);
+      error.status = 404;
+      return next(error);
     } else {
       res.writeHead(404, {'Content-Type': 'text/plain'});
       return res.end(error_message);
@@ -181,21 +185,23 @@ Router.prototype.handle = function (req, res, next) {
 // Checks whether there is a route matching this request. If there is a match,
 // returns the matched route params, otherwise returns null.
 Router.prototype.match = function match (options) {
-  var url = options.url;
+  var url    = options.url;
+  var method = options.method;
   
   for (var i = 0; i < this._matchers.length; i++) {
     var matcher = this._matchers[i];
     var pattern = matcher.pattern;
     
-    if (matcher.method && options.method && (matcher.method !== options.method)) {
+    if (matcher.method && method && (matcher.method !== method)) {
       continue;
     }
     
     if (pattern.matches(url)) {
       var match = pattern.match(url);
-      var params = match.namedParams;
-      params.route_name = matcher.route_name;
-      return params;
+      return {
+        params : match.namedParams,
+        name   : matcher.route_name
+      }
     }
   }
   return null;

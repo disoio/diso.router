@@ -23,7 +23,7 @@ var app = Connect();
 app
   .use(router)
   .use(function (req, res, next) {
-    res.end((req.params.title || '') + req.params.route_name);
+    res.end((req.route.params.title || '') + req.route.name);
   });
 
 var super_test = SuperTest(app);

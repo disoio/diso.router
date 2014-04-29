@@ -44,7 +44,14 @@ module.exports = {
         
         Assert.equal(url, '/show/barf');
       },
-      
+      'route created from #match' : function () {
+        var expected_url = '/show/barf'
+        var route = router.match({
+          url : expected_url
+        });
+        var url = router.format(route);
+        Assert.equal(expected_url, url);
+      },
       'overly complicated route' : function () {
         var url = router.format({
           name   : 'overlyComplicated',

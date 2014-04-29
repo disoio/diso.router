@@ -26,16 +26,16 @@ module.exports = {
       'empty route matcher': function (done) {
         var req = { method: 'GET', url: '/' };
         router.handle(req, {});
-        Assert.equal(req.params.route_name, 'home');
-        Assert.equal(Object.keys(req.params).length, 1);
+        Assert.equal(req.route.name, 'home');
+        Assert.equal(Object.keys(req.route.params).length, 0);
         done();
       },
       
       'named param route': function (done) {
         var req = { method: 'GET', url: '/show/barf' };
         router.handle(req, {});
-        Assert.equal(req.params.route_name, 'show');
-        Assert.equal(req.params.title, 'barf');
+        Assert.equal(req.route.name, 'show');
+        Assert.equal(req.route.params.title, 'barf');
         done();
       },
       
@@ -43,15 +43,15 @@ module.exports = {
         var date = '122312';
         var req = { method: 'GET', url: '/event/' + date }
         router.handle(req, {});
-        Assert.equal(req.params.route_name, 'event');
-        Assert.equal(req.params.date, date);
+        Assert.equal(req.route.name, 'event');
+        Assert.equal(req.route.params.date, date);
         done();
       },
       
       'route using POST': function (done) {
         var req = { method: 'POST', url: '/show' };
         router.handle(req, {});
-        Assert.equal(req.params.route_name, 'createShow');
+        Assert.equal(req.route.name, 'createShow');
         done();
       },
       
@@ -61,7 +61,7 @@ module.exports = {
         router.route(doh_route_name, doh_url);
         var req = { method: 'GET', 'url': doh_url };
         router.handle(req, {});
-        Assert.equal(req.params.route_name, doh_route_name);
+        Assert.equal(req.route.name, doh_route_name);
         done();
       },
       
@@ -71,7 +71,7 @@ module.exports = {
         router.route(oc_route_name, oc_url);
         var req = { method: 'GET', 'url': oc_url };
         router.handle(req, {});
-        Assert.equal(req.params.route_name, oc_route_name);
+        Assert.equal(req.route.name, oc_route_name);
         done();
       },
       
