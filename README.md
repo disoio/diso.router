@@ -87,7 +87,9 @@ Connect().use(router).use(function (req, res, next) {
 
 ### or match can be used directly on client or server
 ```javascript
-var route = router.match({url : '/derp/4ever'}) 
+var route = router.match({
+  url : '/derp/4ever'
+}); 
 // route = {
 //   name   : 'Derp',
 //   params : {
@@ -96,12 +98,13 @@ var route = router.match({url : '/derp/4ever'})
 // }
 
 var url = router.match({
-  name : 'Show',
-  params : {
-    title : 'barf'
-    page  : 10
-  }
-}).url();
+  route : {
+    name : 'Show',
+    params : {
+      title : 'barf'
+      page  : 10
+   }
+}}).url();
 // url = '/show/barf?page=10'
 ```
 
@@ -114,3 +117,4 @@ TODO
 - instead of iterating over array could use prefix trie like https://github.com/c9s/r3 but prolly not worth the time
 - include post data in route params? 
 - rewrite without RoutePattern and ditch query param / hash naming, allow for optional params? 
+- docco -o docs source/*.js
