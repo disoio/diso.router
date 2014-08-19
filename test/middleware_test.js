@@ -1,5 +1,4 @@
 var Assert = require('assert');
-var Asserts = require('asserts');
 var Connect = require('connect');
 var SuperTest = require('supertest');
 
@@ -16,8 +15,7 @@ var actions = {
   home: end
 };
 
-var router = new Router();
-router.route(routes);
+var router = new Router(routes);
 
 var app = Connect();
 app
@@ -54,11 +52,10 @@ module.exports = {
     },
     
     'unmatched route by': {
-      'rendering 404 text when notFound is not set': function (done) {
+      'adding NotFound route to request': function (done) {
         super_test
           .get('/heyheyhey')
-          .expect(/Error: 404 Not Found\./)
-          .expect(404)
+          .expect('NotFound')
           .end(supertestEnd(done));
       },
       
@@ -83,4 +80,3 @@ module.exports = {
     }
   }
 };
-

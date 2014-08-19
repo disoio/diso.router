@@ -1,41 +1,49 @@
 {
-  "name": "diso.router",
-  "version": "4.0.1",
-  "description": "Simple router that augments request object with params, using RoutePattern for named param matching.",
-  "license": "MIT",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stephenhandley/diso.router.git"
+  "name"        : "diso.router",
+  "version"     : "5.0.0",
+  "description" : "Simple router that augments request object with params, using RoutePattern for named param matching.",
+  "license"     : "MIT",
+  "main"        : "source/index.js",
+
+  "repository" : {
+    "type" : "git",
+    "url"  : "https://github.com/stephenhandley/diso.router.git"
   },
-  "scripts": {
-    "test": "node test/test.js"
+
+  "scripts" : {
+    "test" : "node test/test.js"
   },
-  "keywords": [
+
+  "keywords" : [
     "route",
     "router",
     "routes",
     "routing"
   ],
-  "directories": {
-    "lib": ".",
-    "test": "test"
+
+  "directories" : {
+    "source" : "source",
+    "test"   : "test"
   },
-  "engines": {
-    "node": ">=0.10.5"
+
+  "engines" : {
+    "node" : ">=0.10.5"
   },
-  "dependencies": {
-    "type-of-is": "3.1.x",
-    "route-pattern": "0.0.6"
+
+  "dependencies" : {
+    "type-of-is"    : "3.3.0",
+    "route-pattern" : "0.0.6"
   },
-  "devDependencies": {
-    "asserts": "4.0.x",
-    "supertest": "~0.8.0",
-    "connect": "~2.9.0"
+
+  "devDependencies" : {
+    "asserts"   : "4.0.2",
+    "supertest" : "~0.8.0",
+    "connect"   : "~2.9.0"
   },
-  "author": {
-    "name": "Stephen Handley",
-    "email": "stephen.handley@gmail.com",
-    "url": "http://person.sh"
+  
+  "author" : {
+    "name"  : "Stephen Handley",
+    "email" : "stephen.handley@gmail.com",
+    "url"   : "http://person.sh"
   }
 }

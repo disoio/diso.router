@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>MatchedRoute.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="MatchedRoute.html">
+                MatchedRoute.js
+              </a>
+            
+              
+              <a class="source" href="NotFound.html">
+                NotFound.js
+              </a>
+            
+              
+              <a class="source" href="Route.html">
+                Route.js
+              </a>
+            
+              
+              <a class="source" href="Router.html">
+                Router.js
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>MatchedRoute.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="core-dependencies">Core dependencies</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="http://nodejs.org/api/url.html">url</a> </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> Url  = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h1 id="matchedroute">MatchedRoute</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="constructor">constructor</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>create a matched route that can construct a url
+using the matched params and route pattern</p>
+<h3 id="required-arguments">required arguments</h3>
+<p><strong>name</strong>    : name for this route</p>
+<p><strong>params</strong>  : params for this route</p>
+<p><strong>pattern</strong> : pattern for this route</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MatchedRoute</span> <span class="hljs-params">(args)</span> </span>{
+  <span class="hljs-keyword">this</span>.name    = args.name;
+  <span class="hljs-keyword">this</span>.params  = args.params;
+  <span class="hljs-keyword">this</span>.pattern = args.pattern;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="url">url</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>return the url for this route by substituting
+params for their occurence in this route’s pattern</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>MatchedRoute.prototype.url = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">url</span> <span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">this</span>.pattern; 
+  <span class="hljs-keyword">var</span> params  = <span class="hljs-keyword">this</span>.params;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_substitute</span> <span class="hljs-params">(str, k)</span> </span>{
+    <span class="hljs-keyword">var</span> placeholder = <span class="hljs-string">':'</span> + k;
+    <span class="hljs-keyword">var</span> value = params[k];
+    str = str.replace(placeholder, value);
+    <span class="hljs-keyword">delete</span> params[k];
+    <span class="hljs-keyword">return</span> str;
+  }
+  
+  <span class="hljs-keyword">var</span> path = pattern.pathPattern.routeString;
+  <span class="hljs-keyword">var</span> path_param_names = pattern.pathPattern.params;
+  <span class="hljs-keyword">if</span> (path_param_names.length) {
+    path_param_names.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(k)</span> </span>{
+      path = _substitute(path, k);
+    });
+  }
+  
+  <span class="hljs-keyword">var</span> hash = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">if</span> (pattern.hashPattern) {
+    hash_param_names = pattern.hashPattern.params;
+    hash = pattern.hashPattern.routeString;
+    hash_param_names.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(k)</span> </span>{
+      hash = _substitute(hash, k);
+    });
+  }
+  
+  <span class="hljs-keyword">var</span> url_params = {
+    pathname : path,
+    query    : params
+  }
+  
+  <span class="hljs-keyword">if</span> (hash) {
+    url_params.hash = hash;
+  }
+
+  <span class="hljs-keyword">return</span> Url.format(url_params);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="notfound-">notFound </h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Convenience method used by handle in <a href="./Router.html">Router</a> </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>MatchedRoute.prototype.notFound = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-built_in">module</span>.exports = MatchedRoute;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

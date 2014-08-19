@@ -1,21 +1,23 @@
 var Assert = require('assert');
-var Asserts = require('asserts');
 var Router = require('../');
 
 var routes = {
-  show: 'GET /show/:title',
-  createShow: 'POST /show',
-  event: { pattern: '/event/:date', method: 'GET' },
+  show              : 'GET /show/:title',
+  createShow        : 'POST /show',
+  event             : { 
+    pattern : '/event/:date', 
+    method  : 'GET' 
+  },
   overlyComplicated : '/hello/:planet?foo=:foo&fruit=:fruit#:section',
-  home: '/'
+  home              : '/'
 };
 
 var end = function (req, res) { res.end() };
 var actions = {
-  home: end,
-  show: end,
-  event: end,
-  createShow: end,
+  home       : end,
+  show       : end,
+  event      : end,
+  createShow : end
 };
 
 var router = new Router(routes);
@@ -58,7 +60,7 @@ module.exports = {
       'single mapped route': function (done) {
         var doh_route_name = 'doh';
         var doh_url = '/dohdohdoh';
-        router.route(doh_route_name, doh_url);
+        router.addRoute(doh_route_name, doh_url);
         var req = { method: 'GET', 'url': doh_url };
         router.handle(req, {});
         Assert.equal(req.route.name, doh_route_name);
@@ -68,7 +70,7 @@ module.exports = {
       'overly complicated route': function (done) {
         var oc_route_name = 'overlyComplicated';
         var oc_url = '/hello/earth?foo=bar&fruit=apple#chapter2';
-        router.route(oc_route_name, oc_url);
+        router.addRoute(oc_route_name, oc_url);
         var req = { method: 'GET', 'url': oc_url };
         router.handle(req, {});
         Assert.equal(req.route.name, oc_route_name);
@@ -76,17 +78,11 @@ module.exports = {
       },
       
       'unmatched route by': {
-        'rendering 404 text when notFound is not set': function (done) {
+        'setting route to NotFound': function (done) {
           var req = { method: 'GET', url: '/barf' };
-          router.handle(req, { 
-            writeHead: function (status, headers) {
-              Assert.equal(status, 404);
-            }, 
-            end : function (txt) {
-              Assert.equal(txt, '404 Not Found.'); 
-              done();
-            }
-          });
+          router.handle(req, {});
+          Assert.equal(req.route.name, 'NotFound');
+          done();
         },
         'calling notFound when it is set': function (done) {
           var req = { method: 'GET', url: '/barf' };
