@@ -116,8 +116,8 @@ Router.prototype.notFound = function notFound (not_found) {
   this._not_found = not_found;
 };
 
-// notFound
-// --------
+// notFoundUrl
+// -----------
 // Optionally set the url that is returned in the [NotFound](./NotFound.html)
 // route. This is only set when a route-based match fails,
 // for url-based matches, the specified url is used.
