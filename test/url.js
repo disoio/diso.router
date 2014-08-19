@@ -12,7 +12,7 @@ var routes = {
 var router = new Router(routes);
 
 module.exports = {
-  'Matched route url method should': {
+  'MatchedRoute url method should': {
     'properly handle': {
       'matched url route': function () {
         var original = '/show/derp';
