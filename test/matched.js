@@ -12,54 +12,54 @@ var routes = {
 var router = new Router(routes);
 
 module.exports = {
-  'MatchedRoute url method should': {
+  'MatchedRoute path method should': {
     'properly handle': {
-      'matched url route': function () {
+      'matched path route': function () {
         var original = '/show/derp';
-        var url = router.match({
-          url : original
-        }).url();
+        var path = router.match({
+          path : original
+        }).path();
 
-        Assert.equal(url, original);
+        Assert.equal(path, original);
       },
 
       'empty route': function () {
-        var url = router.match({ 
+        var path = router.match({ 
           route : {
             name   : 'emptyRoute',
             params : {}
           }
-        }).url();
+        }).path();
         
-        Assert.equal(url, '/');
+        Assert.equal(path, '/');
       },
       
       'no param route': function () {
-        var url = router.match({
+        var path = router.match({
           route : {
             name   : 'noParams',
             params : {}
           }
-        }).url();
+        }).path();
         
-        Assert.equal(url, '/show');
+        Assert.equal(path, '/show');
       },
       
       'one param route': function () {
-        var url = router.match({
+        var path = router.match({
           route : {
             name   : 'oneParam',
             params : {
               title : 'barf'
             }
           }
-        }).url();
+        }).path();
         
-        Assert.equal(url, '/show/barf');
+        Assert.equal(path, '/show/barf');
       },
 
       'overly complicated route' : function () {
-        var url = router.match({
+        var path = router.match({
           route : {
             name   : 'overlyComplicated',
             params : {
@@ -69,19 +69,19 @@ module.exports = {
               foo     : 'd'
             }
           }
-        }).url();
+        }).path();
         
-        parsed_url = Url.parse(url, true);
-        Assert.equal(parsed_url.pathname, '/hello/earth');
-        Assert.equal(parsed_url.hash, '#barf');
-        Assert.deepEqual(parsed_url.query, {
+        parsed = Url.parse(path, true);
+        Assert.equal(parsed.pathname, '/hello/earth');
+        Assert.equal(parsed.hash, '#barf');
+        Assert.deepEqual(parsed.query, {
           foo   : 'd',
           fruit :'bythefoot'
         });
       },
 
       'extra params by adding them to the query' : function () {
-        var url = router.match({
+        var path = router.match({
           route : {
             name   : 'overlyComplicated',
             params : {
@@ -92,12 +92,12 @@ module.exports = {
               section : 'barf'
             }
           }
-        }).url();
+        }).path();
         
-        parsed_url = Url.parse(url, true);
-        Assert.equal(parsed_url.pathname, '/hello/earth');
-        Assert.equal(parsed_url.hash, '#barf');
-        Assert.deepEqual(parsed_url.query, {
+        parsed = Url.parse(path, true);
+        Assert.equal(parsed.pathname, '/hello/earth');
+        Assert.equal(parsed.hash, '#barf');
+        Assert.deepEqual(parsed.query, {
           foo   : 'd',
           fruit : 'bythefoot',
           barf  : 'b'
@@ -106,27 +106,27 @@ module.exports = {
     },
 
     'missing route' : function () {
-      var url = router.match({
+      var path = router.match({
         route : {
           name   : 'barf',
           params : {}
         }
-      }).url();
+      }).path();
 
-      Assert.equal(url, '/404');
+      Assert.equal(path, '/404');
     },
 
     'missing param' : function () {
-      var url = router.match({
+      var path = router.match({
         route : {
           name   : 'oneParam',
           params : {
             barf : 'barf'
           }
         }
-      }).url();
+      }).path();
 
-      Assert.equal(url, '/404');
+      Assert.equal(path, '/404');
     }
   }
 };

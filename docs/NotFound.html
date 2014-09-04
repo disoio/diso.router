@@ -86,12 +86,12 @@
               <p>Route returned when no route is matched. Instances
 are api compatible with <a href="./MatchedRoute.html">MatchedRoute</a></p>
 <h3 id="required-arguments">required arguments</h3>
-<p><strong>url</strong> : the url to be returned for this route</p>
+<p><strong>path</strong> : the path to be returned for this route</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">NotFound</span> <span class="hljs-params">(url)</span> </span>{
-  <span class="hljs-keyword">this</span>._url    = url;
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">NotFound</span> <span class="hljs-params">(path)</span> </span>{
+  <span class="hljs-keyword">this</span>._path   = path;
   <span class="hljs-keyword">this</span>.name    = <span class="hljs-string">'NotFound'</span>;
   <span class="hljs-keyword">this</span>.params  = {};
   <span class="hljs-keyword">this</span>.pattern = <span class="hljs-literal">null</span>;
@@ -106,7 +106,7 @@ are api compatible with <a href="./MatchedRoute.html">MatchedRoute</a></p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <h2 id="url">url</h2>
+              <h2 id="path">path</h2>
 
             </div>
             
@@ -119,12 +119,12 @@ are api compatible with <a href="./MatchedRoute.html">MatchedRoute</a></p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>return the url for this route</p>
+              <p>return the path for this route</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>NotFound.prototype.url = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._url;
+            <div class="content"><div class='highlight'><pre>NotFound.prototype.path = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._path;
 };</pre></div></div>
             
         </li>

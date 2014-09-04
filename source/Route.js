@@ -30,21 +30,21 @@ function Route (args) {
 // match
 // -----
 // Try to match this route to args object, which can specify
-// match target as url or route (name, params) and optional
+// match target as path or route (name, params) and optional
 // method. 
 // returns [MatchedRoute](./MatchedRoute.html) on a match otherwise null
 Route.prototype.match = function match (args) {
-  var fn_name = ('url' in args) ? '_matchUrl' : '_matchRoute';
+  var fn_name = ('path' in args) ? '_matchPath' : '_matchRoute';
   return this[fn_name].call(this, args);
 }
 
 
-// _matchUrl
-// ---------
-// Try to match this route to the url in args object
+// _matchPath
+// ----------
+// Try to match this route to the path in args object
 // returns [MatchedRoute](./MatchedRoute.html) on a match otherwise null
-Route.prototype._matchUrl = function matchUrl (args) {
-  var url     = args.url;
+Route.prototype._matchPath = function matchPath (args) {
+  var path    = args.path;
   var method  = args.method;
   var pattern = this.pattern;
 
@@ -52,9 +52,9 @@ Route.prototype._matchUrl = function matchUrl (args) {
     return null;
   }
   
-  if (pattern.matches(url)) {
+  if (pattern.matches(path)) {
     // uses [RoutePattern](https://github.com/bjoerge/route-pattern/) for matching
-    var match = pattern.match(url);
+    var match = pattern.match(path);
 
     return new MatchedRoute({
       name    : this.name,
@@ -70,7 +70,7 @@ Route.prototype._matchUrl = function matchUrl (args) {
 // -----------
 // Try to match this route with the route in args object. For a match to 
 // occur, two conditions have to be met:
-// 1. names gotta match
+// 1. route names have to match
 // 2. all params specified in the pattern need to be present
 // returns [MatchedRoute](./MatchedRoute.html) on a match otherwise null
 Route.prototype._matchRoute = function (args) {

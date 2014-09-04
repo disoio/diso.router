@@ -141,9 +141,9 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Router</span> <span class="hljs-params">(routes)</span> </span>{
-  <span class="hljs-keyword">this</span>._routes        = [];
-  <span class="hljs-keyword">this</span>._not_found     = <span class="hljs-literal">null</span>;
-  <span class="hljs-keyword">this</span>._not_found_url = <span class="hljs-string">'/404'</span>;
+  <span class="hljs-keyword">this</span>._routes         = [];
+  <span class="hljs-keyword">this</span>._not_found      = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">this</span>._not_found_path = <span class="hljs-string">'/404'</span>;
   
   <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">1</span>) {
     <span class="hljs-keyword">this</span>.addRoutes(routes);
@@ -376,7 +376,7 @@ is matched by handle</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <h2 id="notfound">notFound</h2>
+              <h2 id="notfoundpath">notFoundPath</h2>
 
             </div>
             
@@ -389,14 +389,14 @@ is matched by handle</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Optionally set the url that is returned in the <a href="./NotFound.html">NotFound</a>
+              <p>Optionally set the path that is returned in the <a href="./NotFound.html">NotFound</a>
 route. This is only set when a route-based match fails,
-for url-based matches, the specified url is used.</p>
+for path-based matches, the specified path is used.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Router.prototype.notFoundUrl = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notFoundUrl</span> <span class="hljs-params">(url)</span> </span>{
-  <span class="hljs-keyword">this</span>._not_found_url = url;
+            <div class="content"><div class='highlight'><pre>Router.prototype.notFoundPath = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notFoundPath</span> <span class="hljs-params">(path)</span> </span>{
+  <span class="hljs-keyword">this</span>._not_found_path = path;
 }</pre></div></div>
             
         </li>
@@ -429,7 +429,7 @@ also invoked by <a href="https://github.com/senchalabs/connect">connect</a> midd
             
             <div class="content"><div class='highlight'><pre>Router.prototype.handle = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res, next)</span> </span>{
   req.route = <span class="hljs-keyword">this</span>.match({
-    url    : req.url,
+    path   : req.url,
     method : req.method
   });</pre></div></div>
             
@@ -492,7 +492,7 @@ handle directly</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Checks whether there is a route matching the passed url or route
+              <p>Checks whether there is a route matching the passed path or route
 data. If there is a match, it returns a <a href="./MatchedRoute.html">MatchedRoute</a> 
 otherwise returns <a href="./NotFound.html">NotFound</a>.</p>
 
@@ -517,13 +517,32 @@ otherwise returns <a href="./NotFound.html">NotFound</a>.</p>
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>if a route arg was passed and it didn’t match anything then there’s
-no way to construct a url so set it to _not_found_url, which defaults
-to /404 and can be set via notFoundUrl</p>
+no way to construct a path so set it to _not_found_path, which defaults
+to /404 and can be set via notFoundPath</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> url = (<span class="hljs-string">'url'</span> <span class="hljs-keyword">in</span> args) ? args.url : <span class="hljs-keyword">this</span>._not_found_url;
-  <span class="hljs-keyword">var</span> not_found = <span class="hljs-keyword">new</span> NotFound(url);
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> path;
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'path'</span> <span class="hljs-keyword">in</span> args) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>get just the path of path </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    path = <span class="hljs-string">'/'</span> + args.path.split(<span class="hljs-string">'/'</span>).slice(<span class="hljs-number">3</span>).join(<span class="hljs-string">'/'</span>)
+  } <span class="hljs-keyword">else</span> {
+    path = <span class="hljs-keyword">this</span>._not_found_path;
+  }
+  <span class="hljs-keyword">var</span> not_found = <span class="hljs-keyword">new</span> NotFound(path);
 
   <span class="hljs-keyword">return</span> not_found;
 };

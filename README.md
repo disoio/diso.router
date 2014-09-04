@@ -7,7 +7,7 @@ Simple router for client and server, using [RoutePattern](https://github.com/bjo
 
 Latest Version
 --------------
-5.0.0
+6.0.0
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "~5.0.0"
+    "diso.router": "~6.0.0"
   }
 }
 ```
@@ -88,7 +88,7 @@ Connect().use(router).use(function (req, res, next) {
 ### or match can be used directly on client or server
 ```javascript
 var route = router.match({
-  url : '/derp/4ever'
+  path : '/derp/4ever'
 }); 
 // route = {
 //   name   : 'Derp',
@@ -97,15 +97,15 @@ var route = router.match({
 //   }
 // }
 
-var url = router.match({
+var path = router.match({
   route : {
     name : 'Show',
     params : {
       title : 'barf'
       page  : 10
    }
-}}).url();
-// url = '/show/barf?page=10'
+}}).path();
+// path = '/show/barf?page=10'
 ```
 
 License

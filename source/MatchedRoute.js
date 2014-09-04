@@ -7,7 +7,7 @@ var Url  = require('url');
 // ============
 // constructor
 // -----------
-// create a matched route that can construct a url
+// create a matched route that can construct a path
 // using the matched params and route pattern
 // ### required arguments
 // **name**    : name for this route
@@ -21,11 +21,11 @@ function MatchedRoute (args) {
   this.pattern = args.pattern;
 }
 
-// url
-// ---
-// return the url for this route by substituting
+// path
+// ----
+// return the path for this route by substituting
 // params for their occurence in this route's pattern
-MatchedRoute.prototype.url = function url () {
+MatchedRoute.prototype.path = function path () {
   var pattern = this.pattern; 
   var params  = this.params;
 
@@ -37,6 +37,7 @@ MatchedRoute.prototype.url = function url () {
     return str;
   }
   
+  // build the path part
   var path = pattern.pathPattern.routeString;
   var path_param_names = pattern.pathPattern.params;
   if (path_param_names.length) {
@@ -45,6 +46,7 @@ MatchedRoute.prototype.url = function url () {
     });
   }
   
+  // build the hash part
   var hash = null;
   if (pattern.hashPattern) {
     hash_param_names = pattern.hashPattern.params;
@@ -54,6 +56,7 @@ MatchedRoute.prototype.url = function url () {
     });
   }
   
+  // query string is built from any remaining parameters
   var url_params = {
     pathname : path,
     query    : params

@@ -1,6 +1,6 @@
 {
   "name"        : "diso.router",
-  "version"     : "5.0.0",
+  "version"     : "6.0.0",
   "description" : "Simple router that augments request object with params, using RoutePattern for named param matching.",
   "license"     : "MIT",
   "main"        : "source/index.js",

@@ -18,9 +18,9 @@ var NotFound = require('./NotFound');
 // ### optional arguments
 // **routes**  : routes to add
 function Router (routes) {
-  this._routes        = [];
-  this._not_found     = null;
-  this._not_found_url = '/404';
+  this._routes         = [];
+  this._not_found      = null;
+  this._not_found_path = '/404';
   
   if (arguments.length === 1) {
     this.addRoutes(routes);
@@ -116,13 +116,13 @@ Router.prototype.notFound = function notFound (not_found) {
   this._not_found = not_found;
 };
 
-// notFoundUrl
+// notFoundPath
 // -----------
-// Optionally set the url that is returned in the [NotFound](./NotFound.html)
+// Optionally set the path that is returned in the [NotFound](./NotFound.html)
 // route. This is only set when a route-based match fails,
-// for url-based matches, the specified url is used.
-Router.prototype.notFoundUrl = function notFoundUrl (url) {
-  this._not_found_url = url;
+// for path-based matches, the specified path is used.
+Router.prototype.notFoundPath = function notFoundPath (path) {
+  this._not_found_path = path;
 }
 
 // handle
@@ -133,7 +133,7 @@ Router.prototype.notFoundUrl = function notFoundUrl (url) {
 // also invoked by [connect](https://github.com/senchalabs/connect) middleware. 
 Router.prototype.handle = function (req, res, next) {
   req.route = this.match({
-    url    : req.url,
+    path   : req.url,
     method : req.method
   });
 
@@ -152,7 +152,7 @@ Router.prototype.handle = function (req, res, next) {
 
 // match
 // -----
-// Checks whether there is a route matching the passed url or route
+// Checks whether there is a route matching the passed path or route
 // data. If there is a match, it returns a [MatchedRoute](./MatchedRoute.html) 
 // otherwise returns [NotFound](./NotFound.html).
 Router.prototype.match = function match (args) {  
@@ -165,10 +165,16 @@ Router.prototype.match = function match (args) {
   }
   
   // if a route arg was passed and it didn't match anything then there's
-  // no way to construct a url so set it to _not_found_url, which defaults
-  // to /404 and can be set via notFoundUrl
-  var url = ('url' in args) ? args.url : this._not_found_url;
-  var not_found = new NotFound(url);
+  // no way to construct a path so set it to _not_found_path, which defaults
+  // to /404 and can be set via notFoundPath
+  var path;
+  if ('path' in args) {
+    // get just the path of path 
+    path = '/' + args.path.split('/').slice(3).join('/')
+  } else {
+    path = this._not_found_path;
+  }
+  var not_found = new NotFound(path);
 
   return not_found;
 };

@@ -172,14 +172,14 @@
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Try to match this route to args object, which can specify
-match target as url or route (name, params) and optional
+match target as path or route (name, params) and optional
 method. 
 returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>Route.prototype.match = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">match</span> <span class="hljs-params">(args)</span> </span>{
-  <span class="hljs-keyword">var</span> fn_name = (<span class="hljs-string">'url'</span> <span class="hljs-keyword">in</span> args) ? <span class="hljs-string">'_matchUrl'</span> : <span class="hljs-string">'_matchRoute'</span>;
+  <span class="hljs-keyword">var</span> fn_name = (<span class="hljs-string">'path'</span> <span class="hljs-keyword">in</span> args) ? <span class="hljs-string">'_matchPath'</span> : <span class="hljs-string">'_matchRoute'</span>;
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[fn_name].call(<span class="hljs-keyword">this</span>, args);
 }</pre></div></div>
             
@@ -192,7 +192,7 @@ returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <h2 id="_matchurl">_matchUrl</h2>
+              <h2 id="_matchpath">_matchPath</h2>
 
             </div>
             
@@ -205,13 +205,13 @@ returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Try to match this route to the url in args object
+              <p>Try to match this route to the path in args object
 returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Route.prototype._matchUrl = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">matchUrl</span> <span class="hljs-params">(args)</span> </span>{
-  <span class="hljs-keyword">var</span> url     = args.url;
+            <div class="content"><div class='highlight'><pre>Route.prototype._matchPath = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">matchPath</span> <span class="hljs-params">(args)</span> </span>{
+  <span class="hljs-keyword">var</span> path    = args.path;
   <span class="hljs-keyword">var</span> method  = args.method;
   <span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">this</span>.pattern;
 
@@ -219,7 +219,7 @@ returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null
     <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
   }
   
-  <span class="hljs-keyword">if</span> (pattern.matches(url)) {</pre></div></div>
+  <span class="hljs-keyword">if</span> (pattern.matches(path)) {</pre></div></div>
             
         </li>
         
@@ -234,7 +234,7 @@ returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> match = pattern.match(url);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> match = pattern.match(path);
 
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> MatchedRoute({
       name    : <span class="hljs-keyword">this</span>.name,
@@ -271,7 +271,7 @@ returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null
               <p>Try to match this route with the route in args object. For a match to 
 occur, two conditions have to be met:</p>
 <ol>
-<li>names gotta match</li>
+<li>route names have to match</li>
 <li>all params specified in the pattern need to be present
 returns <a href="./MatchedRoute.html">MatchedRoute</a> on a match otherwise null</li>
 </ol>

@@ -5,19 +5,19 @@
 // Route returned when no route is matched. Instances
 // are api compatible with [MatchedRoute](./MatchedRoute.html)
 // ### required arguments
-// **url** : the url to be returned for this route
-function NotFound (url) {
-  this._url    = url;
+// **path** : the path to be returned for this route
+function NotFound (path) {
+  this._path   = path;
   this.name    = 'NotFound';
   this.params  = {};
   this.pattern = null;
 }
 
-// url
-// ---
-// return the url for this route
-NotFound.prototype.url = function () {
-  return this._url;
+// path
+// ----
+// return the path for this route
+NotFound.prototype.path = function () {
+  return this._path;
 };
 
 // notFound 
