@@ -4,7 +4,7 @@
 var RoutePattern = require('route-pattern');  
 
 // Local dependencies
-// ------------------ 
+// ------------------
 // [MatchedRoute](./MatchedRoute.html)  
 var MatchedRoute = require('./MatchedRoute');
 

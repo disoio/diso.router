@@ -1,6 +1,6 @@
 // Core dependencies
 // -----------------
-// [url](http://nodejs.org/api/url.html) 
+// [url](http://nodejs.org/api/url.html)  
 var Url  = require('url');
 
 // MatchedRoute

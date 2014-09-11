@@ -4,7 +4,7 @@
 var Type = require('type-of-is');
 
 // Local dependencies
-// ------------------ 
+// ------------------
 // [Route](./Route.html)  
 // [NotFound](./NotFound.html)  
 var Route    = require('./Route');
