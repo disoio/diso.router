@@ -7,7 +7,7 @@ Simple router for client and server, using [RoutePattern](https://github.com/bjo
 
 Latest Version
 --------------
-6.0.0
+6.0.1
 
 Installation
 ------------
@@ -21,7 +21,7 @@ or in package.json
 {
   ...
   "dependencies": {
-    "diso.router": "~6.0.0"
+    "diso.router": "~6.0.1"
   }
 }
 ```

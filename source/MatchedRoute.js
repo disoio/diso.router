@@ -27,7 +27,15 @@ function MatchedRoute (args) {
 // params for their occurence in this route's pattern
 MatchedRoute.prototype.path = function path () {
   var pattern = this.pattern; 
-  var params  = this.params;
+
+  // clone params for building the path non-destructively
+  // since it modifies the params
+  var params = {};
+  for (var key in this.params) {
+    if (this.params.hasOwnProperty(key)) {
+      params[key] = this.params[key];
+    }
+  }
 
   function _substitute (str, k) {
     var placeholder = ':' + k;
