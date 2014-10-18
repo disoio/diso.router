@@ -69,7 +69,7 @@ Router.prototype.addRoutes = function addRoutes (routes) {
       // check for a HTTP verb prefix
       var method_prefix = pattern.match(_METHOD_PREFIX_REGEXP);
       if (method_prefix) {
-        pattern = pattern.slice(method_prefix[0].length);
+        pattern = pattern.slice(method_prefix[0].length).trim();
         method  = method_prefix[1];
       }
       
