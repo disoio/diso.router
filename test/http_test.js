@@ -4,6 +4,7 @@ var Router = require('../');
 var routes = {
   show              : 'GET /show/:title',
   createShow        : 'POST /show',
+  spacey            : 'GET      /spacey',
   event             : { 
     pattern : '/event/:date', 
     method  : 'GET' 
@@ -47,6 +48,13 @@ module.exports = {
         router.handle(req, {});
         Assert.equal(req.route.name, 'event');
         Assert.equal(req.route.params.date, date);
+        done();
+      },
+
+      'route with multiple spaces between http method and pattern' : function (done) {
+        var req = { method: 'GET', url : '/spacey'};
+        router.handle(req, {});
+        Assert.equal(req.route.name, 'spacey');
         done();
       },
       
