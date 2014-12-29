@@ -3,10 +3,11 @@ var Url     = require('url');
 var Router  = require('../');
 
 var routes = {
-  emptyRoute: '/',
-  noParams: '/show',
-  oneParam: '/show/:title',
-  overlyComplicated : '/hello/:planet?foo=:foo&fruit=:fruit#:section',
+  emptyRoute        : '/',
+  noParams          : '/show',
+  oneParam          : '/show/:title',
+  twoParam          : '/show?barf=:barf',
+  overlyComplicated : '/hello/:planet?foo=:foo&fruit=:fruit#:section'
 };
 
 var router = new Router(routes);
@@ -102,6 +103,22 @@ module.exports = {
           fruit : 'bythefoot',
           barf  : 'b'
         });
+      },
+
+      'extra query params by keeping them in the query' : function () {
+        var show = '/show?derp=true';
+        var show_path = router.match({
+          path : show
+        }).path();
+
+        Assert.equal(show_path, show);
+
+        var show_barf = '/show?barf=pizza&derp=true&honk=10';
+        var show_barf_path = router.match({
+          path : show_barf
+        }).path();
+
+        Assert.equal(show_barf_path, show_barf);
       }
     },
 

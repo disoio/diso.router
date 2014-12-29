@@ -1,3 +1,8 @@
+// Core dependencies
+// -----------------
+// [url](http://nodejs.org/api/url.html)  
+var Url  = require('url');
+
 // NPM dependencies
 // ----------------
 // [RoutePattern](https://github.com/bjoerge/route-pattern/)  
@@ -54,11 +59,21 @@ Route.prototype._matchPath = function matchPath (args) {
   
   if (pattern.matches(path)) {
     // uses [RoutePattern](https://github.com/bjoerge/route-pattern/) for matching
-    var match = pattern.match(path);
+    var params = pattern.match(path).namedParams;
+
+    // add extra query params to the url 
+    var query = Url.parse(path, true).query;
+    for (var key in query) {
+      var query_has  = query.hasOwnProperty(key);
+      var params_has = params.hasOwnProperty(key);
+      if (query_has && !params_has) {
+        params[key] = query[key]
+      }
+    }
 
     return new MatchedRoute({
       name    : this.name,
-      params  : match.namedParams,
+      params  : params,
       pattern : pattern
     });
   } else {

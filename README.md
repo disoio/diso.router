@@ -7,7 +7,7 @@ Simple router for client and server, using [RoutePattern](https://github.com/bjo
 
 Latest Version
 --------------
-6.0.2
+6.0.3
 
 Installation
 ------------
